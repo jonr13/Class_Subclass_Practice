@@ -1,0 +1,69 @@
+import datetime
+def hour(hour):
+  hour = datetime.time(hour)
+  return hour.strftime("%I%p")
+
+class Menu:
+  purchase_total = 0
+  def __init__(self, name, items, start_time, end_time):
+    self.name = name
+    self.items = items
+    self.start_time = start_time
+    self.end_time = end_time
+    start_hour = hour(self.start_time)
+    end_hour = hour(self.end_time)
+
+  def __repr__(self):
+    string = f"{self.name} menu is available from {self.start_hour} to {self.end_hour}!"
+    return string
+  def calculate_bill(self, purchased_items):
+    for item in purchased_items:
+      self.purchase_total += self.items[item]
+    return self.purchase_total
+  
+class Franchise:
+  def __init__(self, address, menus):
+    self.address = address
+    self.menus = menus
+  def __repr__(self):
+    string = f"The address of the restaurant is {self.address}."
+    return string
+  def available_menus(self, time):
+    for menu in self.menus:
+      it = [menu.items for menu in self.menus if time >= menu.start_time and time <= menu.end_time]
+      return it
+
+class Business:
+  def __init__(self, name, franchises):
+    self.name = name
+    self.franchises = franchises
+
+brun = {
+  'pancakes': 7.50, 'waffles': 9.00, 'burger': 11.00, 'home fries': 4.50, 'coffee': 1.50, 'espresso': 3.00, 'tea': 1.00, 'mimosa': 10.50, 'orange juice': 3.50
+}
+early = {
+  'salumeria plate': 8.00, 'salad and breadsticks (serves 2, no refills)': 14.00, 'pizza with quattro formaggi': 9.00, 'duck ragu': 17.50, 'mushroom ravioli (vegan)': 13.50, 'coffee': 1.50, 'espresso': 3.00,}
+din = {
+  'crostini with eggplant caponata': 13.00, 'ceaser salad': 16.00, 'pizza with quattro formaggi': 11.00, 'duck ragu': 19.50, 'mushroom ravioli (vegan)': 13.50, 'coffee': 2.00, 'espresso': 3.00,
+}
+kid = {
+  'chicken nuggets': 6.50, 'fusilli with wild mushrooms': 12.00, 'apple juice': 3.00
+}
+
+brunch = Menu("brunch", brun, 11, 16)
+early_bird = Menu("early_bird", early, 15, 18)
+dinner = Menu("dinner", din, 17, 23)
+kids = Menu("kids", kid, 11, 21)
+menus = [brunch, early_bird, dinner, kids]
+
+flagship_store = Franchise("1232 West End Road", menus)
+new_installment = Franchise("12 East Mulberry Street", menus)
+
+#_____________#
+
+business_1_fran = [flagship_store, new_installment]
+business_1 = Business("Basta Fazoolin with my Heart", business_1_fran)
+arepas_menus = {
+  'arepa pabellon': 7.00, 'pernil arepa': 8.50, 'guayanes arepa': 8.00, 'jamon arepa': 7.50
+}
+arepas_place = Franchise("189 Fitzgerald Avenue", arepas_menus)
